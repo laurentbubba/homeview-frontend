@@ -1,9 +1,36 @@
 {
+  "general": {
+    "app": {
+      "title": "Vue d'ensemble de la maison"
+    },
+    "messages": {
+      "WIP": "Travaux en cours"
+    }
+  },
+  "header": {
+    "nav": {
+      "home": "Accueil",
+      "status": "Statut",
+      "tasks": "Tâches",
+      "switchLanguage": "Changer de langue"
+    }
+  },
   "home": {
-    "title": "Bienvenu!",
-    "description": "Ce site contient xx."
+    "title": "Bienvenue sur le site !",
+    "description": "Ce site prend en charge plusieurs langues."
+  },
+  "switchLanguage": {
+    "choose": "Choisir une langue"
+  },
+  "statuspage": {
+    "title": "Statut du site",
+    "siteword": "Site",
+    "statuses": {
+      "online": "le site est en ligne",
+      "hasproblem": "le site a quelques problèmes"
+    }
   },
   "genta":{
-    "love": "J'aime ma petite Gentite"
+    "love": "J'aime ma gentita"
   }
 }

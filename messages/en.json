@@ -1,7 +1,34 @@
 {
+  "general": {
+    "app": {
+      "title": "Home overview"
+    },
+    "messages": {
+      "WIP": "Work in progress"
+    }
+  },
+  "header": {
+    "nav": {
+      "home": "Home",
+      "status": "Status",
+      "tasks": "Tasks",
+      "switchLanguage": "Switch Language"
+    }
+  },
   "home": {
     "title": "Welcome to the site!",
     "description": "This site supports multiple languages."
+  },
+  "switchLanguage": {
+    "choose": "Choose a language"
+  },
+  "statuspage": {
+    "title": "Site status",
+    "siteword": "Site",
+    "statuses": {
+      "online": "the site is online",
+      "hasproblem": "the site is having some issues"
+    }
   },
   "genta":{
     "love": "I love my gentita"

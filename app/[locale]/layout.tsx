@@ -3,6 +3,8 @@
 import { routing } from '@/i18n/routing';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import { notFound } from 'next/navigation';
+import '../globals.css'; // holy hell how annoying was this
+import Header from './_components/Header';
  
 type Props = {
   children: React.ReactNode;
@@ -18,8 +20,13 @@ export default async function LocaleLayout({children, params}: Props) {
 
   return (
     <html>
-      <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body className="min-h-screen flex flex-col">
+        <NextIntlClientProvider>
+          <Header/>
+          <main className="flex-grow flex flex-col">
+          {children}
+          </main>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

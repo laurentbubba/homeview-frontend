@@ -1,9 +1,36 @@
 {
+  "general": {
+    "app": {
+      "title": "Descripción general de la casa"
+    },
+    "messages": {
+      "WIP": "Trabajo en progreso"
+    }
+  },
+  "header": {
+    "nav": {
+      "home": "Inicio",
+      "status": "Estado",
+      "tasks": "Tareas",
+      "switchLanguage": "Cambiar idioma"
+    }
+  },
   "home": {
-    "title": "Benvenudo!",
-    "description": "Eso sito tiene xx."
+    "title": "¡Bienvenido al sitio!",
+    "description": "Este sitio es compatible con varios idiomas."
+  },
+  "switchLanguage": {
+    "choose": "Elige un idioma"
+  },
+  "statuspage": {
+    "title": "Estado del sitio",
+    "siteword": "Sitio",
+    "statuses": {
+      "online": "el sitio está en línea",
+      "hasproblem": "el sitio está teniendo algunos problemas"
+    }
   },
   "genta":{
-    "love": "Amo mi gentiana"
+    "love": "Amo a mi gentita"
   }
 }

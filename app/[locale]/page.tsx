@@ -7,12 +7,11 @@ export default function Home() {
   const t = useTranslations();
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <p>{t('genta.love')}</p>
-        <LocaleSwitcher/>
+    <div className="">
+      <main className="flex flex-col items-center justify-items-center">
+        <p className="text-3xl my-3">{t('genta.love')}</p>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="">
         {/* extra links and socials etc? */}
       </footer>
     </div>
