@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 
-export default function tasks() {
+export default function Tasks() {
     const t = useTranslations();
   return (
     <div className="flex-grow flex flex-col items-center justify-center">

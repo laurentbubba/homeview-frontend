@@ -1,7 +1,6 @@
 'use client'
 
 import { useTranslations } from "next-intl";
-import { LocaleSwitcher } from "./_components/LocaleSwitcher";
 
 export default function Home() {
   const t = useTranslations();

@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { LocaleSwitcher } from '../_components/LocaleSwitcher';
 
-export default function switchLanguage() {
+export default function SwitchLanguage() {
     const t = useTranslations();
   return (
     <div className="flex-grow flex flex-col items-center">
