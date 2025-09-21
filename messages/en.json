@@ -25,6 +25,7 @@
   "statuspage": {
     "title": "Site status",
     "siteword": "Site",
+    "backendServer": "Web server",
     "statuses": {
       "online": "the site is online",
       "hasproblem": "the site is having some issues"

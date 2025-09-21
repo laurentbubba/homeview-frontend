@@ -29,6 +29,11 @@ const Header: React.FC = () => {
           {t('header.nav.home')}
         </Link>
         <Link
+          href="/status"
+          className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.status')}
+        </Link>
+        <Link
           href="/tasks"
           className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.tasks')}
@@ -37,11 +42,6 @@ const Header: React.FC = () => {
           href="/switchLanguage"
           className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.switchLanguage')}
-        </Link>
-        <Link
-          href="/status"
-          className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.status')}
         </Link>
 
         {/* TODO: add user login page etc */}
