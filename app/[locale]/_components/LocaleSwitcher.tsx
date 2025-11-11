@@ -21,10 +21,13 @@ export const LocaleSwitcher = () => {
     if (path.startsWith(`/${currentLocale}`)) {
         return path.substring(`/${currentLocale}`.length) || '/';
     }
+    // console.log('PathWithoutLocale: ' + path);
     return path;
   };
 
   const targetPath = getPathWithoutLocale(currentPath);
+  // console.log('currentPath: ' + currentPath);
+  // console.log('targetPath: ' + targetPath);
 
   return (
     <div className=''>
@@ -33,7 +36,7 @@ export const LocaleSwitcher = () => {
         <li key={locale}>
           <Link
             key={locale}
-            href={targetPath} // TODO: should go to the current path, not to the home page
+            href={targetPath}
             locale={locale}
             className={`px-2 rounded-md ${
               currentLocale === locale ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
