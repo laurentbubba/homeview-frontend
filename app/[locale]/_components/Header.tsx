@@ -16,6 +16,8 @@ const Header: React.FC = () => {
 //   };
 
   const t = useTranslations();
+  // for now not really relevant (TODO: make better problem on live)
+  const isVisibleSwitchLanguage = false;
 
   return (
     <header className="flex-shrink-0 p-3 border-bottom bg-gradient-to-br from-gray-900 to-gray-600 flex flex-col items-center">
@@ -38,11 +40,13 @@ const Header: React.FC = () => {
           className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.tasks')}
         </Link>
-        <Link
-          href="/switchLanguage"
-          className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.switchLanguage')}
-        </Link>
+        {isVisibleSwitchLanguage ? (
+          <Link
+            href="/switchLanguage"
+            className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
+            {t('header.nav.switchLanguage')}
+          </Link>
+        ) : null}
 
         {/* TODO: add user login page etc */}
         {/* {!loggedInUser && (

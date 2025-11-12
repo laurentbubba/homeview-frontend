@@ -31,6 +31,12 @@
       "hasproblem": "the site is having some issues"
     }
   },
+    "taskspage": {
+    "title": "Tasks",
+    "colTaskname": "Task name",
+    "colDescription": "Description",
+    "colIsFinished": "Is Finished"
+  },
   "genta":{
     "love": "I love my gentita"
   }
