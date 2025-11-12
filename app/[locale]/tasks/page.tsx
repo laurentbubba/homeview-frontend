@@ -42,7 +42,7 @@ export default function Tasks() {
 
   useInterval(() => {
     if (!error) getTasks();
-  }, 10000);
+  }, 4000);
 
   // To show tasks
   let taskBlock;

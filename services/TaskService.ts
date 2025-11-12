@@ -7,11 +7,7 @@ import { Task, TaskInput } from "@/types/Types";
 
 const getAllTasks = () => {
   return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/tasks', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    //   Authorization: `Bearer ${getToken()}`,
-    },
+    method: 'GET'
   });
 };
 
@@ -26,9 +22,16 @@ const createTask = (task: TaskInput) => {
   });
 };
 
+const finishTask = (taskId: number) => {
+  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + `/tasks/finish/${taskId}`, {
+    method: 'PUT'
+  });
+};
+
 const TaskService = {
   getAllTasks,
   createTask,
+  finishTask,
 };
 
 export default TaskService;

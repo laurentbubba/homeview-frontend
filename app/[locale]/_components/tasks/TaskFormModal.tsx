@@ -27,6 +27,7 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
 
     const handleClickCreateTask = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
+        setStatus('');
 
         if (!validate()) {
             return;
