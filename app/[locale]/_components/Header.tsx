@@ -17,7 +17,7 @@ const Header: React.FC = () => {
 
   const t = useTranslations();
   // for now not really relevant (TODO: make better problem on live)
-  const isVisibleSwitchLanguage = false;
+  const isVisibleExtraStuff = false;
 
   return (
     <header className="flex-shrink-0 p-3 border-bottom bg-gradient-to-br from-gray-900 to-gray-600 flex flex-col items-center">
@@ -25,22 +25,48 @@ const Header: React.FC = () => {
         {t('general.app.title')}
       </a>
       <nav className="items-center flex md:flex-row flex-col">
+        {isVisibleExtraStuff ? (
         <Link
           href="/"
           className=" px-4 text-xl text-white  hover:bg-gray-600 rounded-lg">
           {t('header.nav.home')}
         </Link>
+        ) : null}
+        {isVisibleExtraStuff ? (
         <Link
           href="/status"
           className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.status')}
         </Link>
+        ) : null}
+
         <Link
-          href="/tasks"
-          className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.tasks')}
+          href="/personal"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.personal')}
         </Link>
-        {isVisibleSwitchLanguage ? (
+        <Link
+          href="/study"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.study')}
+        </Link>
+        <Link
+          href="/house"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.house')}
+        </Link>
+        <Link
+          href="/homeview"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.homeview')}
+        </Link>
+        <Link
+          href="/all_tasks"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.allTasks')}
+        </Link>
+
+        {isVisibleExtraStuff ? (
           <Link
             href="/switchLanguage"
             className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">

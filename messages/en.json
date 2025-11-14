@@ -11,7 +11,11 @@
     "nav": {
       "home": "Home",
       "status": "Status",
-      "tasks": "Tasks",
+      "personal": "Personal",
+      "study": "Study",
+      "house": "House",
+      "homeview": "Homeview",
+      "allTasks": "All",
       "switchLanguage": "Switch Language"
     }
   },
@@ -31,8 +35,32 @@
       "hasproblem": "the site is having some issues"
     }
   },
-    "taskspage": {
-    "title": "Tasks",
+  "personalpage": {
+    "title": "Personal tasks",
+    "colTaskname": "Task name",
+    "colDescription": "Description",
+    "colIsFinished": "Is Finished"
+  },
+  "studypage": {
+    "title": "Study Steps",
+    "colTaskname": "Task name",
+    "colDescription": "Description",
+    "colIsFinished": "Is Finished"
+  },
+  "housepage": {
+    "title": "House Chores",
+    "colTaskname": "Task name",
+    "colDescription": "Description",
+    "colIsFinished": "Is Finished"
+  },
+  "homeviewpage": {
+    "title": "Homeview App",
+    "colTaskname": "Task name",
+    "colDescription": "Description",
+    "colIsFinished": "Is Finished"
+  },
+  "alltaskspage": {
+    "title": "All Tasks",
     "colTaskname": "Task name",
     "colDescription": "Description",
     "colIsFinished": "Is Finished"

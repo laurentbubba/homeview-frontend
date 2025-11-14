@@ -14,4 +14,5 @@ export type Task = {
 export type TaskInput = {
     name: string | null;
     description: string | null;
+    categoryName: string | null;
 }

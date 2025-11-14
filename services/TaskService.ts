@@ -11,6 +11,12 @@ const getAllTasks = () => {
   });
 };
 
+const getUnfinishedTasksByCategory = (categoryName: string) => {
+  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + `/tasks/byCategory/${categoryName}`, {
+    method: 'GET'
+  });
+};
+
 const createTask = (task: TaskInput) => {
   return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/tasks/create', {
     method: 'POST',
@@ -32,6 +38,7 @@ const TaskService = {
   getAllTasks,
   createTask,
   finishTask,
+  getUnfinishedTasksByCategory,
 };
 
 export default TaskService;

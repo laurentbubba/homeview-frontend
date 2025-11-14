@@ -8,7 +8,9 @@ import useInterval from 'use-interval';
 import TasksOverviewTable from '../_components/tasks/TasksOverviewTable';
 import TaskFormModal from '../_components/tasks/TaskFormModal';
 
-export default function Tasks() {
+export default function Homeview() {
+  const categoryName = "Homeview";
+
   const t = useTranslations();
   const [tasks, setTasks] = useState<Array<Task>>();
   const [error, setError] = useState<string>();
@@ -17,10 +19,10 @@ export default function Tasks() {
   const openForm = () => setIsFormOpen(true);
   const closeForm = () => setIsFormOpen(false);
 
-  const getTasks = async () => {
+  const getUnfinishedTasksByCategory = async (category: string) => {
     setError('');
     // TODO: set selected task to null?
-    const response = await TaskService.getAllTasks();
+    const response = await TaskService.getUnfinishedTasksByCategory(category);
 
     if (!response.ok) {
       if (response.status === 401) {
@@ -37,12 +39,12 @@ export default function Tasks() {
   };
 
   useEffect(() => {
-    getTasks();
+    getUnfinishedTasksByCategory(categoryName);
   }, []);
 
   useInterval(() => {
-    if (!error) getTasks();
-  }, 4000);
+    if (!error) getUnfinishedTasksByCategory(categoryName);
+  }, 1000);
 
   // To show tasks
   let taskBlock;
@@ -80,7 +82,7 @@ export default function Tasks() {
   return (
     <>
       <main className="p-6 min-h-screen flex flex-col items-center">
-        <h1 className="text-3xl my-3">{t('taskspage.title')}</h1>
+        <h1 className="text-3xl my-3">{t('homeviewpage.title')}</h1>
         <section>
           {taskBlock}
         </section>
