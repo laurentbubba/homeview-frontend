@@ -39,32 +39,13 @@ const Header: React.FC = () => {
           {t('header.nav.status')}
         </Link>
         ) : null}
-
+        {isVisibleExtraStuff ? (
         <Link
-          href="/personal"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.personal')}
+          href="/categories"
+          className="px-4  text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.status')}
         </Link>
-        <Link
-          href="/study"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.study')}
-        </Link>
-        <Link
-          href="/house"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.house')}
-        </Link>
-        <Link
-          href="/homeview"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.homeview')}
-        </Link>
-        <Link
-          href="/all_tasks"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
-          {t('header.nav.allTasks')}
-        </Link>
+        ) : null}
 
         {isVisibleExtraStuff ? (
           <Link
@@ -73,6 +54,18 @@ const Header: React.FC = () => {
             {t('header.nav.switchLanguage')}
           </Link>
         ) : null}
+
+        <Link
+          href="/tasks"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.tasks')}
+        </Link>
+
+        <Link
+          href="/dev"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.dev')}
+        </Link>
 
         {/* TODO: add user login page etc */}
         {/* {!loggedInUser && (

@@ -11,6 +11,12 @@ export type Task = {
     isFinished: boolean;
 }
 
+export type Category = {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export type TaskInput = {
     name: string | null;
     description: string | null;

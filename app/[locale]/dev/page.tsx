@@ -2,15 +2,14 @@
 
 import { useTranslations } from "next-intl";
 
-export default function Home() {
+export default function Dev() {
   const t = useTranslations();
 
   return (
     <div className="">
       <main className="flex flex-col items-center justify-items-center">
-        <p className="text-2xl my-3">{t('home.title')}</p>
+        <p className="text-2xl my-3">{t('dev.title')}</p>
         <div className="flex flex-col items-center justify-items-center">
-          <h1 className="text-2xl my-3">Documentation (for Laurent)</h1>
           <p>
             <b>Tech Stack:</b> <br></br>
             PROD: <br></br>
@@ -73,9 +72,6 @@ export default function Home() {
           </p>
         </div>
       </main>
-      <footer className="">
-        {/* extra links and socials etc? */}
-      </footer>
     </div>
   );
 }

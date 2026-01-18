@@ -12,7 +12,6 @@ const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask}: Props) => {
     const [status, setStatus] = useState<string>('');
 
     const HandleFinishTask = async (taskId: number) => {
-
         const response = await TaskService.finishTask(taskId);
         const data = await response.json();
 
