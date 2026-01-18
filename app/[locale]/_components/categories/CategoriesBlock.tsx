@@ -3,7 +3,7 @@ import { Category, Task } from "@types";
 import CategoriesOverviewTable from "./CategoriesOverviewTable";
 
 type Props = {
-    categoriesError: any;
+    categoriesError: Error | undefined;
     categoriesIsLoading: boolean;
     categoriesData: Category[] | undefined; // this makes sense for if we send the wrong thing back
     selectCategory: (category: string) => void;
@@ -13,7 +13,7 @@ const CategoriesBlock: React.FC<Props> = ({categoriesError, categoriesIsLoading,
 
     if (categoriesError) {
         return (
-            <p>ERROR: {categoriesError}</p>
+            <p>ERROR: {categoriesError.message}</p>
         )
     }
     else if (categoriesIsLoading) {
