@@ -17,8 +17,39 @@ export type Category = {
     description: string;
 }
 
+export type RecipeType = {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export type Recipe = {
+    id: number;
+    name: string;
+    type: RecipeType;
+    cookingDescription: string;
+    ingredients: Ingredient[];
+};
+
+export type Ingredient = {
+    name: string;
+    quantity: number;
+    unit: string;
+};
+
 export type TaskInput = {
     name: string | null;
     description: string | null;
     categoryName: string | null;
+}
+
+export type RecipeInput = {
+    name: string | null;
+    typeString: string | null;
+    cookingDescription: string | null;
+    ingredients: Array<{
+        name: string;
+        quantity: number;
+        unit: string;
+    }>
 }

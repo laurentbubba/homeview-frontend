@@ -11,6 +11,7 @@
     "nav": {
       "home": "Home",
       "tasks": "Tasks",
+      "recipes": "Recipes",
       "dev": "Dev",
       "switchLanguage": "Switch Language"
     }
@@ -21,6 +22,10 @@
   },
   "dev": {
     "title": "Development Info",
+    "description": "description"
+  },
+  "recipes": {
+    "title": "Choose a Recipe",
     "description": "description"
   },
   "switchLanguage": {
