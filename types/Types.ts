@@ -32,6 +32,13 @@ export type Recipe = {
 };
 
 export type Ingredient = {
+    id: number;
+    name: string;
+    quantity: number;
+    unit: string;
+};
+
+export type IngredientInput = {
     name: string;
     quantity: number;
     unit: string;
@@ -47,9 +54,5 @@ export type RecipeInput = {
     name: string | null;
     typeString: string | null;
     cookingDescription: string | null;
-    ingredients: Array<{
-        name: string;
-        quantity: number;
-        unit: string;
-    }>
+    ingredients: IngredientInput[]
 }

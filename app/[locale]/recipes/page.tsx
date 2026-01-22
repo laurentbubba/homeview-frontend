@@ -10,6 +10,7 @@ import RecipeService from '@/services/RecipeService';
 import RecipeTypesBlock from '../_components/recipeTypes/RecipeTypesBlock';
 import RecipesOverviewTable from '../_components/recipes/RecipesOverviewTable';
 import RecipeWheel from '../_components/recipes/RecipeWheel';
+import RecipeFormModalPlusButton from '../_components/recipes/Modal/RecipeFormModalPlusButton';
 
 export default function RecipesByType() {
   const t = useTranslations();
@@ -84,7 +85,7 @@ export default function RecipesByType() {
     <ContentPage title={t('recipes.title')}>
       <RecipeTypesBlock recipeTypesError={errorTypes}
       recipeTypesIsLoading={isLoadingTypes} recipeTypesData={dataTypes} selectRecipeType={handleSelectType}></RecipeTypesBlock>
-      {/* TODO: add meal modal adder => <TaskFormModalPlusButton openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen}></TaskFormModalPlusButton> */}
+      <RecipeFormModalPlusButton openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen}></RecipeFormModalPlusButton>
       {!isLoadingTypes && recipeBlock}
       {!isLoadingTypes && recipeTable}
     </ContentPage>
