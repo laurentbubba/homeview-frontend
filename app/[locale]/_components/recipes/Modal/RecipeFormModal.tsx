@@ -25,7 +25,7 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
     };
 
     const addIngredientLine = () => {
-        let name = '', quantity = 0, unit = '';
+        const name = '', quantity = 0, unit = '';
         const newIngredient: IngredientInput = { 
             name, 
             quantity, 
@@ -47,7 +47,8 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
         if (field === 'quantity') {
             (newIngredients[index][field] as number) = Number(value);
         }else {
-            (newIngredients[index] as any)[field] = value;
+            const stringField = field as 'name' | 'unit';
+            newIngredients[index][stringField] = String(value);
         }
         setIngredients(newIngredients);
     };
