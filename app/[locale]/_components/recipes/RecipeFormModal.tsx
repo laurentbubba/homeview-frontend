@@ -1,10 +1,10 @@
 import RecipeService from '@/services/RecipeService';
-import TaskService from '@/services/TaskService';
 import { IngredientInput, RecipeInput } from '@/types/Types';
 import React, { useState } from 'react';
+import { mutate } from 'swr';
 
 interface RecipeFormModalProps {
-    onClose: () => void; 
+    onClose: () => void;
 }
 
 // You will pass the close function from the parent
@@ -90,6 +90,7 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
             setErrors((errors) => [...errors, data.message]);
         } else {
             setStatus('Recipe created successfully.');
+            mutate(['recipesByType', typeString]); // TODO: check if works
         }
     };
 

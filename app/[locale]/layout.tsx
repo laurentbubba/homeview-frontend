@@ -4,7 +4,7 @@ import { routing } from '@/i18n/routing';
 import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import { notFound } from 'next/navigation';
 import '../globals.css'; // holy hell how annoying was this
-import Header from './_components/Header';
+import Header from './_components/Common/Header';
  
 type Props = {
   children: React.ReactNode;

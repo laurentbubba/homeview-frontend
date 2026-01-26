@@ -1,7 +1,7 @@
 {
   "general": {
     "app": {
-      "title": "Home overview"
+      "title": "Laurent's awesome website"
     },
     "messages": {
       "WIP": "Work in progress"
@@ -12,7 +12,8 @@
       "home": "Home",
       "tasks": "Tasks",
       "recipes": "Recipes",
-      "dev": "Dev",
+      "dev": "Dev Info", 
+      "test": "Test",
       "switchLanguage": "Switch Language"
     }
   },
@@ -21,11 +22,15 @@
     "description": "description"
   },
   "dev": {
-    "title": "Development Info",
+    "title": "Development Info (please don't Hack me!)",
+    "description": "description"
+  },
+  "test": {
+    "title": "Test some stuff",
     "description": "description"
   },
   "recipes": {
-    "title": "Choose a Recipe",
+    "title": "Favorite Recipes",
     "description": "description"
   },
   "switchLanguage": {
@@ -41,7 +46,7 @@
     }
   },
     "categorypage": {
-    "title": "Categories"
+    "title": "Serious stuff"
   },
   "genta":{
     "love": "I love my gentita"

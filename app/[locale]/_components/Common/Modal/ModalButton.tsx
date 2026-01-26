@@ -2,11 +2,11 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-interface TaskFormButtonProps {
+interface ModalButtonProps {
   onClick: () => void;
 }
 
-const TaskFormButton: React.FC<TaskFormButtonProps> = ({onClick}) => {
+const ModalButton: React.FC<ModalButtonProps> = ({onClick}) => {
   const t = useTranslations();
 
   return (
@@ -24,4 +24,4 @@ const TaskFormButton: React.FC<TaskFormButtonProps> = ({onClick}) => {
   );
 };
 
-export default TaskFormButton;
+export default ModalButton;

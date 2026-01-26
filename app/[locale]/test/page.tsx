@@ -8,10 +8,9 @@ import CategoryService from '@/services/CategoryService';
 import ContentPage from '../_components/Common/ContentPage';
 import TaskService from '@/services/TaskService';
 import TasksOverviewTable from '../_components/tasks/TasksOverviewTable';
-import TaskFormModal from '../_components/tasks/TaskFormModal';
 import FormModalMechanic from '../_components/Common/Modal/FullModalMechanism';
+import TaskFormModal from '../_components/test/tasks/TaskFormModal';
 import ChoicesLogic from '../_components/Common/ChoiceBlock/ChoicesLogic';
-import FullModalMechanism from '../_components/Common/Modal/FullModalMechanism';
 
 export default function TasksByCategory() {
   const t = useTranslations();
@@ -72,7 +71,7 @@ export default function TasksByCategory() {
       <ChoicesLogic<Category>choicesData={categoriesData} choicesIsLoading={categoriesIsLoading} 
       choicesError={categoriesError} selectChoice={handleSelectCategory} />
 
-      <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} renderForm={(onClose) => (<TaskFormModal onClose={onClose}/>)}></FullModalMechanism>
+      <FormModalMechanic openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} renderForm={(onClose) => (<TaskFormModal onClose={onClose}/>)}></FormModalMechanic>
       
       {!categoriesIsLoading && taskBlock}
     </ContentPage>

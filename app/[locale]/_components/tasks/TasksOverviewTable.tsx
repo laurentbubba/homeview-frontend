@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Task } from "@types";
 import TaskService from "@/services/TaskService";
+import { mutate } from "swr";
 
 type Props = {
     tasks: Array<Task>;
     selectTask: (task: Task) => void;
+    selectedCategory: string;
 };
 
-const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask}: Props) => {
+const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask, selectedCategory}: Props) => {
     const [errors, setErrors] = useState<string[]>([]);
     const [status, setStatus] = useState<string>('');
 
@@ -19,6 +21,7 @@ const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask}: Props) => {
             setErrors((errors) => [...errors, data.message]);
         } else {
             setStatus('Task finished successfully.');
+            mutate(['tasksByCategory', selectedCategory]);
         }
     };
 

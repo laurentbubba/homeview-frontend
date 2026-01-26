@@ -4,13 +4,15 @@ import { Recipe, RecipeType, Task } from '@/types/Types';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import useSWR from 'swr';
-import ContentPage from '../_components/ContentPage';
+import ContentPage from '../_components/Common/ContentPage';
 import RecipeTypeService from '@/services/RecipeTypeService';
 import RecipeService from '@/services/RecipeService';
-import RecipeTypesBlock from '../_components/recipeTypes/RecipeTypesBlock';
 import RecipesOverviewTable from '../_components/recipes/RecipesOverviewTable';
 import RecipeWheel from '../_components/recipes/RecipeWheel';
-import RecipeFormModalPlusButton from '../_components/recipes/Modal/RecipeFormModalPlusButton';
+import FormModalMechanic from '../_components/Common/Modal/FullModalMechanism';
+import RecipeFormModal from '../_components/recipes/RecipeFormModal';
+import ChoicesLogic from '../_components/Common/ChoiceBlock/ChoicesLogic';
+import FullModalMechanism from '../_components/Common/Modal/FullModalMechanism';
 
 export default function RecipesByType() {
   const t = useTranslations();
@@ -28,7 +30,7 @@ export default function RecipesByType() {
     const types = await RecipeTypeService.getAllRecipeTypes();
     return types.json();
   };
-  const { data: dataTypes, error: errorTypes, isLoading: isLoadingTypes }
+  const { data: dataRecipeTypes, error: errorRecipeTypes, isLoading: isLoadingRecipeTypes }
     = useSWR<RecipeType[]>('Types', typesFetcher);
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>();
@@ -83,11 +85,14 @@ export default function RecipesByType() {
 
   return (
     <ContentPage title={t('recipes.title')}>
-      <RecipeTypesBlock recipeTypesError={errorTypes}
-      recipeTypesIsLoading={isLoadingTypes} recipeTypesData={dataTypes} selectRecipeType={handleSelectType}></RecipeTypesBlock>
-      <RecipeFormModalPlusButton openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen}></RecipeFormModalPlusButton>
-      {!isLoadingTypes && recipeBlock}
-      {!isLoadingTypes && recipeTable}
+      <ChoicesLogic<RecipeType>choicesData={dataRecipeTypes} choicesIsLoading={isLoadingRecipeTypes} 
+      choicesError={errorRecipeTypes} selectChoice={handleSelectType} />
+      
+      <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} 
+      renderForm={(onClose) => (<RecipeFormModal onClose={onClose}/>)}></FullModalMechanism>
+      
+      {!isLoadingRecipeTypes && recipeBlock}
+      {!isLoadingRecipeTypes && recipeTable}
     </ContentPage>
   );
 };

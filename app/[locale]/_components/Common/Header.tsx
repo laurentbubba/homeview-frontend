@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   const isVisibleExtraStuff = false;
 
   return (
-    <header className="flex-shrink-0 p-3 border-bottom bg-gradient-to-br from-gray-900 to-gray-600 flex flex-col items-center">
+    <header className="flex-shrink-0 p-3 border-bottom bg-gradient-to-br from-red-900 to-yellow-300 flex flex-col items-center">
       <a className="flex  mb-2 md:mb-5 text-white-50 text-3xl text-gray-300">
         {t('general.app.title')}
       </a>
@@ -72,6 +72,14 @@ const Header: React.FC = () => {
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.dev')}
         </Link>
+
+        {isVisibleExtraStuff ? (
+        <Link
+          href="/test"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          {t('header.nav.test')}
+        </Link>
+        ) : null}
 
         {/* TODO: add user login page etc */}
         {/* {!loggedInUser && (
