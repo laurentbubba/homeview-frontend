@@ -56,3 +56,13 @@ export type RecipeInput = {
     cookingDescription: string | null;
     ingredients: IngredientInput[]
 }
+
+export type CategoryInput = {
+    name: string;
+    description: string;
+}
+
+export type RecipeTypeInput = {
+    name: string;
+    description: string;
+}

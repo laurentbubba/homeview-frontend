@@ -68,6 +68,12 @@ const Header: React.FC = () => {
         </Link>
 
         <Link
+          href="/admin"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
+          Admin
+        </Link>
+
+        <Link
           href="/dev"
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg">
           {t('header.nav.dev')}

@@ -2,6 +2,8 @@ import RecipeService from '@/services/RecipeService';
 import { IngredientInput, RecipeInput } from '@/types/Types';
 import React, { useState } from 'react';
 import { mutate } from 'swr';
+import ModalBase from '../Common/Modal/ModalBase';
+import FormButtons from '../Common/Modal/FormButtons';
 
 interface RecipeFormModalProps {
     onClose: () => void;
@@ -95,16 +97,7 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
     };
 
     return (
-        <div 
-            className="fixed inset-0 bg-black/50 flex justify-center items-center z-[100]" 
-            onClick={onClose} // Close modal when clicking outside
-        >
-            <div 
-                className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-100"
-                onClick={(e) => e.stopPropagation()} // Stop click from bubbling up to the backdrop
-            >
-                <h3 className="text-2xl font-bold text-gray-800 mb-6">Create New Recipe</h3>
-                
+        <ModalBase onClose={onClose} title="Create New Recipe">
                 <form onSubmit={handleClickCreateRecipe}>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Name</label>
@@ -133,43 +126,45 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
                     <div className="mb-6">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Ingredients</label>
                         
-                        {ingredients.map((ingredient, index) => (
-                            <div key={index} className="flex items-center gap-2 mb-2">
-                                <input
-                                    type="text"
-                                    placeholder="Name"
-                                    value={ingredient.name}
-                                    onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
-                                    className="shadow border rounded w-1/2 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="Qty"
-                                    value={ingredient.quantity}
-                                    onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
-                                    className="shadow border rounded w-20 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Unit"
-                                    value={ingredient.unit}
-                                    onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
-                                    className="shadow border rounded w-24 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                
-                                {/* Only show remove button if there is more than 1 ingredient */}
-                                {ingredients.length > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => removeIngredientLine(index)}
-                                        className="text-red-500 hover:text-red-700 font-bold px-2 transition duration-200"
-                                        title="Remove Ingredient"
-                                    >
-                                        ✕
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                        <div className="max-h-64 overflow-y-auto border rounded p-3 mb-3">
+                            {ingredients.map((ingredient, index) => (
+                                <div key={index} className="flex items-center gap-2 mb-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Name"
+                                        value={ingredient.name}
+                                        onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                                        className="shadow border rounded w-1/2 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="Qty"
+                                        value={ingredient.quantity}
+                                        onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
+                                        className="shadow border rounded w-20 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Unit"
+                                        value={ingredient.unit}
+                                        onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
+                                        className="shadow border rounded w-24 py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    
+                                    {/* Only show remove button if there is more than 1 ingredient */}
+                                    {ingredients.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeIngredientLine(index)}
+                                            className="text-red-500 hover:text-red-700 font-bold px-2 transition duration-200"
+                                            title="Remove Ingredient"
+                                        >
+                                            ✕
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
 
                         <button
                             type="button"
@@ -182,25 +177,9 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
 
                     <p className='text-red-600'>{errors}</p>
                     
-                    {/* Submit and Close Buttons */}
-                    <div className="flex items-center justify-between">
-                        <button 
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150" 
-                            type="submit"
-                        >
-                            Submit Task
-                        </button>
-                        <button 
-                            className="text-gray-500 hover:text-gray-800 font-bold py-2 px-4 rounded" 
-                            type="button" 
-                            onClick={onClose}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                <FormButtons onClose={onClose} submitText='Add Recipe'/>
+            </form>
+        </ModalBase>
     );
 }
 
