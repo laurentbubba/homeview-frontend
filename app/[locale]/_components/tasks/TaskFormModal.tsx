@@ -85,7 +85,7 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
 
                 <p className='text-red-600'>{errors}</p>
                 
-                <FormButtons onClose={onClose} />
+                <FormButtons onClose={onClose} submitText={'Create Task'} />
             </form>
         </ModalBase>
     );
