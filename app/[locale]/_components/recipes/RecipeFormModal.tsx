@@ -120,7 +120,7 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
                             </option>
 
                             {!typesIsLoading && typesData?.map((type) => (
-                                <option key={type.id} value={type.id}>
+                                <option key={type.id} value={type.name}>
                                     {type.name}
                                 </option>
                             ))}

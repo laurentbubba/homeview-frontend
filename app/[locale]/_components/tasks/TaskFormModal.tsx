@@ -17,7 +17,7 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [status, setStatus] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<string>("");
-    
+
     const { data: categoriesData,isLoading: categoriesIsLoading, error: categoriesError } = useCategories();
     
     const validate = () => {
@@ -82,7 +82,7 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
                         </option>
 
                         {!categoriesIsLoading && categoriesData?.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
+                            <option key={cat.id} value={cat.name}>
                                 {cat.name}
                             </option>
                         ))}
