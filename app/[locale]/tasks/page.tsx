@@ -12,6 +12,7 @@ import TaskFormModal from '../_components/tasks/TaskFormModal';
 import FormModalMechanic from '../_components/Common/Modal/FullModalMechanism';
 import ChoicesLogic from '../_components/Common/ChoiceBlock/ChoicesLogic';
 import FullModalMechanism from '../_components/Common/Modal/FullModalMechanism';
+import { useCategories } from '@/app/hooks/useCategories';
 
 export default function TasksByCategory() {
   const t = useTranslations();
@@ -26,12 +27,7 @@ export default function TasksByCategory() {
     setSelectedCategory(category);
   }
 
-  const categoriesFetcher = async () => {
-    const categories = await CategoryService.getAllCategories();
-    return categories.json();
-  };
-  const { data: categoriesData, error: categoriesError, isLoading: categoriesIsLoading }
-    = useSWR<Category[]>('Categories', categoriesFetcher);
+  const { data: categoriesData,isLoading: categoriesIsLoading, error: categoriesError } = useCategories();
 
   //useSWR will take the two arguments, so we gotta destructure
   const tasksByCategoryFetcher = async ([_, category]: [string, string]) => {

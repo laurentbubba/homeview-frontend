@@ -13,6 +13,7 @@ import FormModalMechanic from '../_components/Common/Modal/FullModalMechanism';
 import RecipeFormModal from '../_components/recipes/RecipeFormModal';
 import ChoicesLogic from '../_components/Common/ChoiceBlock/ChoicesLogic';
 import FullModalMechanism from '../_components/Common/Modal/FullModalMechanism';
+import { useRecipeTypes } from '@/app/hooks/useCategories';
 
 export default function RecipesByType() {
   const t = useTranslations();
@@ -26,12 +27,7 @@ export default function RecipesByType() {
     setSelectedType(type);
   }
 
-  const typesFetcher = async () => {
-    const types = await RecipeTypeService.getAllRecipeTypes();
-    return types.json();
-  };
-  const { data: dataRecipeTypes, error: errorRecipeTypes, isLoading: isLoadingRecipeTypes }
-    = useSWR<RecipeType[]>('Types', typesFetcher);
+  const { data: typesData,isLoading: typesIsLoading, error: typesError } = useRecipeTypes();
 
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>();
   const handleSelectRecipe = (recipe: Recipe) => {
@@ -85,14 +81,14 @@ export default function RecipesByType() {
 
   return (
     <ContentPage title={t('recipes.title')}>
-      <ChoicesLogic<RecipeType>choicesData={dataRecipeTypes} choicesIsLoading={isLoadingRecipeTypes} 
-      choicesError={errorRecipeTypes} selectChoice={handleSelectType} />
+      <ChoicesLogic<RecipeType>choicesData={typesData} choicesIsLoading={typesIsLoading} 
+      choicesError={typesError} selectChoice={handleSelectType} />
       
       <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} 
       renderForm={(onClose) => (<RecipeFormModal onClose={onClose}/>)}></FullModalMechanism>
       
-      {!isLoadingRecipeTypes && recipeBlock}
-      {!isLoadingRecipeTypes && recipeTable}
+      {!typesIsLoading && recipeBlock}
+      {!typesIsLoading && recipeTable}
     </ContentPage>
   );
 };

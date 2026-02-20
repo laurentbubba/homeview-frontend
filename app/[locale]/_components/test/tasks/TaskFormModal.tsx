@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { mutate } from 'swr';
 import ModalBase from '../../Common/Modal/ModalBase';
 import FormButtons from '../../Common/Modal/FormButtons';
+import { useCategories } from '@/app/hooks/useCategories';
 
 interface TaskFormModalProps {
     onClose: () => void; 
@@ -16,6 +17,9 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
     const [errors, setErrors] = useState<string[]>([]);
     const [status, setStatus] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+    // get the categories for the dropdown
+    const { data: categoriesData,isLoading: categoriesIsLoading, error: categoriesError } = useCategories();
     
     const validate = () => {
         let result = true;
@@ -68,17 +72,21 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">Category</label>
                     <select 
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        value={selectedCategory}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         id="category"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        disabled={categoriesIsLoading}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="" disabled>Select a Category...</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Study">Study</option>
-                        <option value="House">House</option>
-                        <option value="Homeview">Homeview App</option>
-                        <option value="Other">Other</option>
+                        <option value="" disabled>
+                            {categoriesIsLoading ? "Fetching categories..." : "Select a Category..."}
+                        </option>
+
+                        {!categoriesIsLoading && categoriesData?.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
 

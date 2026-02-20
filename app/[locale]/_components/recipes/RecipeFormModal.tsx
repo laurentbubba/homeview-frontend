@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
+import { useRecipeTypes } from '@/app/hooks/useCategories';
 
 interface RecipeFormModalProps {
     onClose: () => void;
@@ -15,6 +16,8 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
     const [typeString, setTypeString] = useState<string>("");
     const [cookingDescription, setCookingDescription] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<IngredientInput[] | []>([]);
+
+    const { data: typesData,isLoading: typesIsLoading, error: typesError } = useRecipeTypes();
 
     const addIngredient = (name: string, quantity: number, unit: string) => {
         const newIngredient: IngredientInput = { 
@@ -106,17 +109,21 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="type">Type</label>
                         <select 
-                            onChange={(e) => setTypeString(e.target.value)}
+                            id="types"
                             value={typeString}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                            id="category"
+                            onChange={(e) => setTypeString(e.target.value)}
+                            disabled={typesIsLoading}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            <option value="" disabled>Select a Type...</option>
-                            <option value="main course">Main Course</option>
-                            <option value="dessert">Dessert</option>
-                            <option value="appetizer">Appetizer</option>
-                            <option value="beverage">Beverage</option>
-                            <option value="other">Other</option>
+                            <option value="" disabled>
+                                {typesIsLoading ? "Fetching types..." : "Select a Type..."}
+                            </option>
+
+                            {!typesIsLoading && typesData?.map((type) => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="mb-4">
