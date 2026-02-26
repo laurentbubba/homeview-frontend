@@ -66,7 +66,16 @@ export default function Dev() {
             database is on neon <br></br>
             truncate sometimes necessary for migrations <br></br>
             <br></br>
-
+            <b>Instances:</b> <br></br>
+            PROD: <br></br>
+            back-end: https://homeview-backend.casa <br></br>
+            front-end: https://homeview-frontend.vercel.app/en <br></br>
+            DEV: <br></br>
+            back-end: https://homeview-backend-dev.onrender.com <br></br>
+            front-end: ??? <br></br>
+            LOCAL: <br></br>
+            back-end: http://localhost:4000 <br></br>
+            front-end: http://localhost:3000/en <br></br>
 
 
           </p>
