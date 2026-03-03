@@ -1,6 +1,6 @@
 // services/AuthService.ts
 import { apiClient } from "@/lib/api";
-import { LoginInput, User } from "@/types/Types";
+import { LoginInput, User, UserData } from "@/types/Types";
 
 export const AuthService = {
   login: (credentials: LoginInput) => 
@@ -12,5 +12,11 @@ export const AuthService = {
   logout: () => 
     apiClient<boolean>('/auth/logout', {
         method: 'POST' 
+    }),
+
+  signup: (userData: UserData) => 
+    apiClient<User>('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(userData),
     }),
 };
