@@ -21,9 +21,14 @@ const ChoicesLogic = <T extends { name: string }>({choicesError, choicesIsLoadin
         );
     }
     else if (choicesData) {
-        return (
-            <ChoicesOverview choicesData={choicesData} selectChoice={selectChoice}></ChoicesOverview>
-        );
+        if (choicesData.length === 0) {
+            return <p className="text-gray-500">No Data has been found.</p>;
+        }
+        else {
+            return (
+                <ChoicesOverview choicesData={choicesData} selectChoice={selectChoice}></ChoicesOverview>
+            );
+        }
     }
 };
 

@@ -1,24 +1,15 @@
+import { apiClient } from "@/lib/api";
 import { Category, CategoryInput } from "@/types/Types";
 
-const getAllCategories = () => {
-  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/categories', {
-    method: 'GET'
-  });
-};
-
-const createCategory = (category: CategoryInput) => {
-  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/categories/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(category),
-  });
-};
-
 const CategoryService = {
-  getAllCategories,
-  createCategory,
+  getAllCategories: () => 
+    apiClient<Category[]>('/categories'),
+
+  createCategory: (category: CategoryInput) => 
+    apiClient<Category>('/categories/create', {
+      method: 'POST',
+      body: JSON.stringify(category),
+    }),
 };
 
 export default CategoryService;

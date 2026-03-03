@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Task } from "@types";
 import TaskService from "@/services/TaskService";
 import { mutate } from "swr";
+import { getErrorMessage } from "@/lib/functions";
 
 type Props = {
     tasks: Array<Task>;
@@ -14,14 +15,14 @@ const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask, selectedCategor
     const [status, setStatus] = useState<string>('');
 
     const HandleFinishTask = async (taskId: number) => {
-        const response = await TaskService.finishTask(taskId);
-        const data = await response.json();
+ 
+        try {
+            const responseJson = await TaskService.finishTask(taskId);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Task finished successfully.');
             mutate(['tasksByCategory', selectedCategory]);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 

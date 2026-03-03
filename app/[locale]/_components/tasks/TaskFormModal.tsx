@@ -5,6 +5,7 @@ import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
 import { useCategories } from '@/app/hooks/useCategories';
+import { getErrorMessage } from '@/lib/functions';
 
 interface TaskFormModalProps {
     onClose: () => void; 
@@ -46,14 +47,13 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
             categoryName: selectedCategory,
         };
 
-        const response = await TaskService.createTask(task);
-        const data = await response.json();
+        try {
+            const responseJson = await TaskService.createTask(task);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Task created successfully.');
             mutate(['tasksByCategory', selectedCategory]);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 
