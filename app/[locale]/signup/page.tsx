@@ -105,7 +105,7 @@ export default function SignupForm() {
           disabled={isLoading}
           className="w-full bg-blue-500 text-white p-2 rounded disabled:bg-gray-400"
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? 'Signing up...' : 'Sign up'}
         </button>
       </form>
     </div>
