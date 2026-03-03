@@ -14,7 +14,10 @@
       "recipes": "Recipes",
       "dev": "Dev Info", 
       "test": "Test",
-      "switchLanguage": "Switch Language"
+      "switchLanguage": "Switch Language",
+      "login": "Login",
+      "signup": "Sign Up",
+      "logout": "Logout"
     }
   },
   "home": {

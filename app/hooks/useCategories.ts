@@ -5,7 +5,7 @@ import useSWR from 'swr';
 
 const categoriesFetcher = async () => {
     const categories = await CategoryService.getAllCategories();
-    return categories.json();
+    return categories;
 };
 
 export const useCategories = () => {
@@ -19,7 +19,7 @@ export const useCategories = () => {
 
 const typesFetcher = async () => {
     const types = await RecipeTypeService.getAllRecipeTypes();
-    return types.json();
+    return types;
 };
 
 export const useRecipeTypes = () => {

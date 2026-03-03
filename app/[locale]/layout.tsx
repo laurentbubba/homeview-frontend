@@ -5,6 +5,7 @@ import {hasLocale, NextIntlClientProvider} from 'next-intl';
 import { notFound } from 'next/navigation';
 import '../globals.css'; // holy hell how annoying was this
 import Header from './_components/Common/Header';
+import Providers from './_components/Providers/Providers';
  
 type Props = {
   children: React.ReactNode;
@@ -22,10 +23,12 @@ export default async function LocaleLayout({children, params}: Props) {
     <html>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider>
-          <Header/>
-          <main className="flex-grow flex flex-col">
-          {children}
-          </main>
+          <Providers>
+            <Header/>
+            <main className="flex-grow flex flex-col">
+            {children}
+            </main>
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>

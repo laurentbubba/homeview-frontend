@@ -72,7 +72,7 @@ export default function Dev() {
             front-end: https://homeview-frontend.vercel.app/en <br></br>
             DEV: <br></br>
             back-end: https://homeview-backend-dev.onrender.com <br></br>
-            front-end: ??? <br></br>
+            front-end (changes everytime): https://homeview-frontend-9920dyu6r-laurent-bubbas-projects-aa8eefd9.vercel.app/en <br></br>
             LOCAL: <br></br>
             back-end: http://localhost:4000 <br></br>
             front-end: http://localhost:3000/en <br></br>

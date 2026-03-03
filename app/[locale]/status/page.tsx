@@ -16,19 +16,12 @@ const StatusComponent: React.FC = () => {
   // TODO: useSWR?
   const getStatus = async () => {
     setError(''); // reset
-    const response = await StatusService.getStatus();
-
-    if (!response.ok) {
-      if (response.status === 401) { // forbidden access
-        setError(
-          'You are not authorized to view this page. Please login first.' // TODO: must become next-intl
-        );
-      } else {
-        setError(response.statusText); // don't know what this would be
-      }
-    } else {
-      const status = await response.json();
-      setStatus(status);
+    try{
+      const responseJson = await StatusService.getStatus();
+      setStatus(responseJson);
+    }
+    catch (error: any) {
+      setError(error.message);
     }
   };
 

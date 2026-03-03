@@ -37,8 +37,7 @@ export default function RecipesByType() {
   //useSWR will take the two arguments, so we gotta destructure
   const recipesByTypeFetcher = async ([_, type]: [string, string]) => {
     if (!type) return [];
-    const response = await RecipeService.getRecipesByType(type);
-    return response.json(); 
+    return await RecipeService.getRecipesByType(type);
   };
   // first argument is conditional based on selectedCategory
   const { data: dataRecipesByType, error: errorRecipesByType, isLoading: isLoadingRecipesByType } = 

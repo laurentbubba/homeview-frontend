@@ -32,8 +32,7 @@ export default function TasksByCategory() {
   //useSWR will take the two arguments, so we gotta destructure
   const tasksByCategoryFetcher = async ([_, category]: [string, string]) => {
     if (!category) return [];
-    const response = await TaskService.getUnfinishedTasksByCategory(category);
-    return response.json(); 
+    return await TaskService.getUnfinishedTasksByCategory(category);
   };
   // first argument is conditional based on selectedCategory
   const { data: tasksByCategory, error: errorTasksByCategory, isLoading: isLoadingTasksByCategory } = 

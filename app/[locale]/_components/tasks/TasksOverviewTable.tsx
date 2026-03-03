@@ -14,14 +14,14 @@ const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask, selectedCategor
     const [status, setStatus] = useState<string>('');
 
     const HandleFinishTask = async (taskId: number) => {
-        const response = await TaskService.finishTask(taskId);
-        const data = await response.json();
+ 
+        try {
+            const responseJson = await TaskService.finishTask(taskId);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Task finished successfully.');
             mutate(['tasksByCategory', selectedCategory]);
+        } catch (error: any) {
+            setErrors((errors) => [...errors, error.message]);
         }
     };
 

@@ -1,26 +1,15 @@
-// services/RecipeService.ts
-import { RecipeInput, Task } from '@/types/Types';
-
-const getRecipesByType = (type: string) => {
-    return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/recipes' + `/byType/${type}`, {
-        method: 'GET',
-    });
-}
-
-const createRecipe = (recipe: RecipeInput) => {
-    return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/recipes' + '/create', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        //   Authorization: `Bearer ${getToken()}`,
-        },
-        body: JSON.stringify(recipe)
-    });
-};
+import { apiClient } from "@/lib/api";
+import { Recipe, RecipeInput } from '@/types/Types';
 
 const RecipeService = {
-  getRecipesByType,
-  createRecipe,
+  getRecipesByType: (type: string) => 
+    apiClient<Recipe[]>(`/recipes/byType/${type}`),
+
+  createRecipe: (recipe: RecipeInput) => 
+    apiClient<Recipe>('/recipes/create', {
+      method: 'POST',
+      body: JSON.stringify(recipe),
+    }),
 };
 
 export default RecipeService;

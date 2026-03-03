@@ -1,24 +1,15 @@
-import { RecipeTypeInput } from "@/types/Types";
-
-const getAllRecipeTypes = () => {
-  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/recipeTypes', {
-    method: 'GET'
-  });
-};
-
-const createRecipeType = (recipeType: RecipeTypeInput) => {
-  return fetch(process.env.NEXT_PUBLIC_BACKEND_API_URL + '/recipeTypes/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(recipeType),
-  });
-};
+import { apiClient } from "@/lib/api"; // Assuming you put the helper in lib/api
+import { RecipeType, RecipeTypeInput } from "@/types/Types";
 
 const RecipeTypeService = {
-  getAllRecipeTypes,
-  createRecipeType,
+  getAllRecipeTypes: () => 
+    apiClient<RecipeType[]>('/recipeTypes'),
+
+  createRecipeType: (recipeType: RecipeTypeInput) => 
+    apiClient<RecipeType>('/recipeTypes/create', {
+      method: 'POST',
+      body: JSON.stringify(recipeType),
+    }),
 };
 
 export default RecipeTypeService;
