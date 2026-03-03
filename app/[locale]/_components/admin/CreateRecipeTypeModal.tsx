@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
+import { getErrorMessage } from '@/lib/functions';
 
 interface CreateRecipeTypeModalProps {
     onClose: () => void;
@@ -40,17 +41,16 @@ function CreateRecipeTypeModal({ onClose }: CreateRecipeTypeModalProps) {
             description,
         };
 
-        const response = await RecipeTypeService.createRecipeType(recipeType);
-        const data = await response.json();
+        try {
+            const responseJson = await RecipeTypeService.createRecipeType(recipeType);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Recipe Type created successfully.');
             mutate('recipeTypes');
             setName('');
             setDescription('');
             setTimeout(() => onClose(), 500);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 

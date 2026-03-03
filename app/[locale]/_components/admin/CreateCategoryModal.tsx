@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
+import { getErrorMessage } from '@/lib/functions';
 
 interface CreateCategoryModalProps {
     onClose: () => void;
@@ -40,17 +41,16 @@ function CreateCategoryModal({ onClose }: CreateCategoryModalProps) {
             description,
         };
 
-        const response = await CategoryService.createCategory(category);
-        const data = await response.json();
+        try {
+            const responseJson = await CategoryService.createCategory(category);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Category created successfully.');
             mutate('categories');
             setName('');
             setDescription('');
             setTimeout(() => onClose(), 500);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 

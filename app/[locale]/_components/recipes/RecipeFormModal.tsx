@@ -5,6 +5,7 @@ import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
 import { useRecipeTypes } from '@/app/hooks/useCategories';
+import { getErrorMessage } from '@/lib/functions';
 
 interface RecipeFormModalProps {
     onClose: () => void;
@@ -88,14 +89,13 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
             ingredients
         };
 
-        const response = await RecipeService.createRecipe(recipe);
-        const data = await response.json();
+        try {
+            const responseJson = await RecipeService.createRecipe(recipe);
 
-        if (!response.ok) {
-            setErrors((errors) => [...errors, data.message]);
-        } else {
             setStatus('Recipe created successfully.');
-            mutate(['recipesByType', typeString]); // TODO: check if works
+            mutate(['recipesByType', typeString]);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 
