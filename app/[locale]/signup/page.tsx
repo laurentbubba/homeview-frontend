@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/services/AuthService';
-import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/functions';
 
 export default function SignupForm() {
@@ -100,7 +99,7 @@ export default function SignupForm() {
           </div>
         )}
 
-        <button 
+        <button
           type="submit" 
           disabled={isLoading}
           className="w-full bg-blue-500 text-white p-2 rounded disabled:bg-gray-400"
