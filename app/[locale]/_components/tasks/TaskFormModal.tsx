@@ -5,6 +5,7 @@ import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
 import { useCategories } from '@/app/hooks/useCategories';
+import { getErrorMessage } from '@/lib/functions';
 
 interface TaskFormModalProps {
     onClose: () => void; 
@@ -51,8 +52,8 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
 
             setStatus('Task created successfully.');
             mutate(['tasksByCategory', selectedCategory]);
-        } catch (error: any) {
-            setErrors((errors) => [...errors, error.message]);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 

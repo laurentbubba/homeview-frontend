@@ -4,6 +4,7 @@ import StatusService from '@/services/StatusService';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Status } from '@types';
+import { getErrorMessage } from '@/lib/functions';
 
 
 // TODO: when backend gets more connections and stuff, this should become split up for separate loading (for performance)
@@ -20,8 +21,8 @@ const StatusComponent: React.FC = () => {
       const responseJson = await StatusService.getStatus();
       setStatus(responseJson);
     }
-    catch (error: any) {
-      setError(error.message);
+    catch (error: unknown) {
+      setError(getErrorMessage(error));
     }
   };
 

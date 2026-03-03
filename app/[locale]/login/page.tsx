@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthService } from '@/services/AuthService';
 import { useAuth } from '@/context/AuthContext';
+import { getErrorMessage } from '@/lib/functions';
 
 export default function LoginForm() {
   const [username, setUsername] = useState('');
@@ -24,8 +25,8 @@ export default function LoginForm() {
       
       router.push('/');
       router.refresh(); // Refresh to update server components with new auth state
-    } catch (error: any) {
-      setErrors([error.message]);
+    } catch (error: unknown) {
+      setErrors([getErrorMessage(error)]);
     } finally {
       setIsLoading(false);
     }

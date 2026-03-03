@@ -7,6 +7,7 @@ import HeaderStyle from './HeaderStyle';
 import { AuthService } from '@/services/AuthService';
 import { useRouter } from '@/i18n/navigation';
 import React from 'react';
+import { getErrorMessage } from '@/lib/functions';
 
 const Header: React.FC = () => {
   const t = useTranslations();
@@ -29,8 +30,8 @@ const Header: React.FC = () => {
       
       router.push('/');
       router.refresh(); // Refresh to update server components with new auth state
-    } catch (error: any) {
-      setErrors([error.message]);
+    } catch (error: unknown) {
+      setErrors([getErrorMessage(error)]);
     } finally {
       setIsLoading(false);
     }

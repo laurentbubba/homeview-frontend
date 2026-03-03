@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Task } from "@types";
 import TaskService from "@/services/TaskService";
 import { mutate } from "swr";
+import { getErrorMessage } from "@/lib/functions";
 
 type Props = {
     tasks: Array<Task>;
@@ -20,8 +21,8 @@ const TasksOverviewTable: React.FC<Props> = ({tasks, selectTask, selectedCategor
 
             setStatus('Task finished successfully.');
             mutate(['tasksByCategory', selectedCategory]);
-        } catch (error: any) {
-            setErrors((errors) => [...errors, error.message]);
+        } catch (error: unknown) {
+            setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 
