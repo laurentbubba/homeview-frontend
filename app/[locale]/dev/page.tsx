@@ -65,6 +65,14 @@ export default function Dev() {
             check github actions for errors, then check pm2 list for errors <br></br>
             database is on neon <br></br>
             truncate sometimes necessary for migrations <br></br>
+
+            <b>Database:</b><br></br>
+            On Servitro<br></br>
+            Auto-restart on crash: sudo systemctl enable postgresql<br></br>
+            Check Status: sudo systemctl status postgresql<br></br>
+            View Logs: sudo journalctl -u postgresql<br></br>
+            Start/Stop: sudo systemctl start/stop postgresql<br></br>
+
             <br></br>
             <b>Instances:</b> <br></br>
             PROD: <br></br>

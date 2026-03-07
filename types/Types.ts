@@ -9,6 +9,7 @@ export type Task = {
     name: string;
     description: string;
     isFinished: boolean;
+    priority: number;
 }
 
 export type Category = {
