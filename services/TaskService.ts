@@ -18,6 +18,12 @@ const TaskService = {
     apiClient<void>(`/tasks/finish/${taskId}`, {
       method: 'PUT',
     }),
+
+  updateTaskPriority: (taskId: number, priority: number) => 
+    apiClient<void>(`/tasks/updatePriority/${taskId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ priority }),
+    }),
 };
 
 export default TaskService;
