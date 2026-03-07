@@ -31,8 +31,14 @@ export default function TasksByCategory() {
 
   //useSWR will take the two arguments, so we gotta destructure
   const tasksByCategoryFetcher = async ([_, category]: [string, string]) => {
-    if (!category) return [];
-    return await TaskService.getUnfinishedTasksByCategory(category);
+    if (!category){
+      return [];
+    }
+    else if (category === 'ALL') {
+      return await TaskService.getAllUnfinishedTasksOnPriority();
+    } else {
+      return await TaskService.getUnfinishedTasksByCategory(category);
+    }
   };
   // first argument is conditional based on selectedCategory
   const { data: tasksByCategory, error: errorTasksByCategory, isLoading: isLoadingTasksByCategory } = 
@@ -61,10 +67,14 @@ export default function TasksByCategory() {
     taskBlock = <TasksOverviewTable tasks={tasksByCategory} selectTask={setSelectedTask} selectedCategory={selectedCategory}/>;
   }
 
-
+  let enrichedData = categoriesData;
+  if (categoriesData) {
+    enrichedData = [{ name: 'ALL' } as Category, ...categoriesData];
+  }
+  
   return (
     <ContentPage title={t('categorypage.title')}>
-      <ChoicesLogic<Category>choicesData={categoriesData} choicesIsLoading={categoriesIsLoading} 
+      <ChoicesLogic<Category>choicesData={enrichedData} choicesIsLoading={categoriesIsLoading} 
       choicesError={categoriesError} selectChoice={handleSelectCategory} />
 
       <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} renderForm={(onClose) => (<TaskFormModal onClose={onClose}/>)}></FullModalMechanism>

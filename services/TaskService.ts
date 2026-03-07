@@ -8,6 +8,9 @@ const TaskService = {
   getUnfinishedTasksByCategory: (categoryName: string) => 
     apiClient<Task[]>(`/tasks/byCategory/${categoryName}`),
 
+  getAllUnfinishedTasksOnPriority: () => 
+    apiClient<Task[]>('/tasks/onPriority'),
+
   createTask: (task: TaskInput) => 
     apiClient<Task>('/tasks/create', {
       method: 'POST',
