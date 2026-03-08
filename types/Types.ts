@@ -49,6 +49,7 @@ export type TaskInput = {
     name: string | null;
     description: string | null;
     categoryName: string | null;
+    priority: number | null;
 }
 
 export type RecipeInput = {

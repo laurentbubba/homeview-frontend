@@ -77,7 +77,7 @@ export default function TasksByCategory() {
       <ChoicesLogic<Category>choicesData={enrichedData} choicesIsLoading={categoriesIsLoading} 
       choicesError={categoriesError} selectChoice={handleSelectCategory} />
 
-      <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} renderForm={(onClose) => (<TaskFormModal onClose={onClose}/>)}></FullModalMechanism>
+      <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} renderForm={(onClose) => (<TaskFormModal onClose={onClose} previouslySelectedCategory={selectedCategory}/>)}></FullModalMechanism>
       
       {!categoriesIsLoading && taskBlock}
     </ContentPage>

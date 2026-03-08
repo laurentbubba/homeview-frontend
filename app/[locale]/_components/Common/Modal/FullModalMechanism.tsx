@@ -1,6 +1,7 @@
 // import { User } from '@types';
 import { ReactNode } from 'react';
 import FormButton from './ModalButton';
+import ModalButton from './ModalButton';
 
 interface FullModalMechanismProps {
   openForm: () => void;
@@ -22,7 +23,7 @@ const FullModalMechanism: React.FC<FullModalMechanismProps> = ({openForm, closeF
   return (
     <>
       {formRender}
-      <FormButton onClick={openForm}></FormButton>
+      <ModalButton onClick={openForm}></ModalButton>
     </>
   );
 };

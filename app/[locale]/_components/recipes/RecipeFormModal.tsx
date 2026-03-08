@@ -9,12 +9,15 @@ import { getErrorMessage } from '@/lib/functions';
 
 interface RecipeFormModalProps {
     onClose: () => void;
+    previouslySelectedRecipeType?: string;
 }
 
 // You will pass the close function from the parent
-function RecipeFormModal({ onClose }: RecipeFormModalProps) {
+function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormModalProps) {
     const [name, setName] = useState<string | null>(null);
-    const [typeString, setTypeString] = useState<string>("");
+    const [typeString, setTypeString] = useState<string>(
+        previouslySelectedRecipeType === 'ALL' ? '' : (previouslySelectedRecipeType || '')
+    );
     const [cookingDescription, setCookingDescription] = useState<string | null>(null);
     const [ingredients, setIngredients] = useState<IngredientInput[] | []>([]);
 
@@ -115,11 +118,13 @@ function RecipeFormModal({ onClose }: RecipeFormModalProps) {
                             disabled={typesIsLoading}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            <option value="" disabled>
-                                {typesIsLoading ? "Fetching types..." : "Select a Type..."}
-                            </option>
+                            {(!typeString || typesIsLoading) && (
+                                <option value="" disabled>
+                                    {typesIsLoading ? "Fetching types..." : "Select a Type..."}
+                                </option>
+                            )}
 
-                            {!typesIsLoading && typesData?.map((type) => (
+                            {typesData?.map((type) => (
                                 <option key={type.id} value={type.name}>
                                     {type.name}
                                 </option>

@@ -22,6 +22,15 @@ export default function RecipesByType() {
   const openForm = () => setIsFormOpen(true);
   const closeForm = () => setIsFormOpen(false);
 
+  const [visual, setVisual] = useState('table');
+  const [visualIcon, setVisualIcon] = useState('📅');
+  const switchVisual = () => {
+    setVisual(visual === 'table' ? 'wheel' : 'table');
+    setVisualIcon(visual === 'table' ? '📅' : '🎡');
+    // setSelectedType(undefined);
+    setSelectedRecipe(undefined);
+  };
+
   const [selectedType, setSelectedType] = useState<string>();
   const handleSelectType = (type: string) => {
     setSelectedType(type);
@@ -63,16 +72,22 @@ export default function RecipesByType() {
     recipeBlock = <div>No recipes have been found.</div>;
   } else if (dataRecipesByType && dataRecipesByType.length > 0) {
     // State 3: Recipes are available
-    recipeBlock = 
-    // <RecipesOverviewTable recipes={dataRecipesByType} selectRecipe={handleSelectRecipe}/>;
-    <RecipeWheel recipes={dataRecipesByType} onWinner={handleSelectRecipe}/>;
+    if (visual === 'table') {
+      recipeBlock = <RecipesOverviewTable recipes={dataRecipesByType}/>;
+    } else if (visual === 'wheel') {
+      recipeBlock =<RecipeWheel recipes={dataRecipesByType} onWinner={handleSelectRecipe}/>;
+    }
+
   }
 
   let recipeTable;
   if (!selectedType) {
     recipeTable = null;
   } else if (!selectedRecipe) {
-    recipeTable = <div className="text-gray-500">No recipe rolled.</div>;
+    if (visual === 'table') {
+    } else if (visual === 'wheel') {
+      recipeTable = <div className="text-gray-500">No recipe rolled.</div>;
+    }
   } else if (selectedRecipe) {
     recipeTable = <RecipesOverviewTable recipes={[selectedRecipe]} selectRecipe={handleSelectRecipe}/>;
   }
@@ -80,11 +95,13 @@ export default function RecipesByType() {
 
   return (
     <ContentPage title={t('recipes.title')}>
+      <button onClick={() => switchVisual()} className="flex-1  p-3 rounded-xl shadow-sm border border-slate-200 bg-white hover:bg-slate-50 hover:shadow-md 
+        transition-all duration-200 flex items-center justify-center gap-3">{visualIcon}</button>
       <ChoicesLogic<RecipeType>choicesData={typesData} choicesIsLoading={typesIsLoading} 
       choicesError={typesError} selectChoice={handleSelectType} />
       
       <FullModalMechanism openForm={openForm} closeForm={closeForm} isFormOpen={isFormOpen} 
-      renderForm={(onClose) => (<RecipeFormModal onClose={onClose}/>)}></FullModalMechanism>
+      renderForm={(onClose) => (<RecipeFormModal onClose={onClose} previouslySelectedRecipeType={selectedType}/>)}></FullModalMechanism>
       
       {!typesIsLoading && recipeBlock}
       {!typesIsLoading && recipeTable}

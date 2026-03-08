@@ -9,15 +9,19 @@ import { getErrorMessage } from '@/lib/functions';
 
 interface TaskFormModalProps {
     onClose: () => void; 
+    previouslySelectedCategory?: string;
 }
 
 // You will pass the close function from the parent
-function TaskFormModal({ onClose }: TaskFormModalProps) {
+function TaskFormModal({ onClose, previouslySelectedCategory }: TaskFormModalProps) {
     const [name, setName] = useState<string | null>(null);
     const [description, setDescription] = useState<string | null>(null);    
     const [errors, setErrors] = useState<string[]>([]);
     const [status, setStatus] = useState<string>('');
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [priority, setPriority] = useState<number | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>(
+        previouslySelectedCategory === 'ALL' ? '' : (previouslySelectedCategory || '')
+    );
 
     const { data: categoriesData,isLoading: categoriesIsLoading, error: categoriesError } = useCategories();
     
@@ -27,6 +31,14 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
 
         if (!name) {
             setErrors((errors) => [...errors, 'Task Name is required.']);
+            result = false;
+        }
+        if (!selectedCategory) {
+            setErrors((errors) => [...errors, 'Category is required.']);
+            result = false;
+        }
+        if (!priority) {
+            setErrors((errors) => [...errors, 'Priority is required.']);
             result = false;
         }
 
@@ -45,6 +57,7 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
             name,
             description,
             categoryName: selectedCategory,
+            priority,
         };
 
         try {
@@ -77,15 +90,37 @@ function TaskFormModal({ onClose }: TaskFormModalProps) {
                         disabled={categoriesIsLoading}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="" disabled>
-                            {categoriesIsLoading ? "Fetching categories..." : "Select a Category..."}
-                        </option>
+                        {(!selectedCategory || categoriesIsLoading) && (
+                            <option value="" disabled>
+                                {categoriesIsLoading ? "Fetching categories..." : "Select a Category..."}
+                            </option>
+                        )}
 
-                        {!categoriesIsLoading && categoriesData?.map((cat) => (
+                        {categoriesData?.map((cat) => (
                             <option key={cat.id} value={cat.name}>
                                 {cat.name}
                             </option>
                         ))}
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="priority">Priority</label>
+                    <select 
+                        name="priority" 
+                        id="priority"
+                        value={priority || ""}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setPriority(val ? parseInt(val) : null);
+                        }}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                        <option value="">Select Priority...</option>
+                        <option value="5">Critical</option>
+                        <option value="4">High</option>
+                        <option value="3">Medium</option>
+                        <option value="2">Low</option>
+                        <option value="1">Optional</option>
                     </select>
                 </div>
 
