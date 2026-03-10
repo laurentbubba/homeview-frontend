@@ -5,11 +5,9 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import useSWR from 'swr';
 import ContentPage from '../_components/Common/ContentPage';
-import RecipeTypeService from '@/services/RecipeTypeService';
 import RecipeService from '@/services/RecipeService';
 import RecipesOverviewTable from '../_components/recipes/RecipesOverviewTable';
 import RecipeWheel from '../_components/recipes/RecipeWheel';
-import FormModalMechanic from '../_components/Common/Modal/FullModalMechanism';
 import RecipeFormModal from '../_components/recipes/RecipeFormModal';
 import ChoicesLogic from '../_components/Common/ChoiceBlock/ChoicesLogic';
 import FullModalMechanism from '../_components/Common/Modal/FullModalMechanism';
@@ -23,7 +21,7 @@ export default function RecipesByType() {
   const closeForm = () => setIsFormOpen(false);
 
   const [visual, setVisual] = useState('table');
-  const [visualIcon, setVisualIcon] = useState('📅');
+  const [visualIcon, setVisualIcon] = useState('🎡');
   const switchVisual = () => {
     setVisual(visual === 'table' ? 'wheel' : 'table');
     setVisualIcon(visual === 'table' ? '📅' : '🎡');
