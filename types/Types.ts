@@ -29,6 +29,15 @@ export type Recipe = {
     name: string;
     type: RecipeType;
     cookingDescription: string;
+    steps: RecipeStep[];
+};
+
+export type RecipeStep = {
+    id: number;
+    order: number;
+    title: string;
+    description: string;
+    time: number;
     ingredients: Ingredient[];
 };
 
@@ -56,8 +65,16 @@ export type RecipeInput = {
     name: string | null;
     typeString: string | null;
     cookingDescription: string | null;
-    ingredients: IngredientInput[]
+    steps: RecipeStepInput[]
 }
+
+export type RecipeStepInput = {
+    order: number;
+    title: string;
+    description: string;
+    time: number;
+    ingredients: IngredientInput[];
+};
 
 export type CategoryInput = {
     name: string;
