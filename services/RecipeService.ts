@@ -1,16 +1,21 @@
 import { apiClient } from "@/lib/api";
-import { Recipe, RecipeInput } from '@/types/Types';
+import { Recipe, RecipeInput } from "@/types/Types";
 
 const RecipeService = {
-  getRecipesByType: (type: string) => 
+  getRecipesByType: (type: string) =>
     apiClient<Recipe[]>(`/recipes/byType/${type}`),
 
-  getRecipeById: (id: string) => 
-    apiClient<Recipe>(`/recipes/${id}`),
+  getRecipeById: (id: string) => apiClient<Recipe>(`/recipes/${id}`),
 
-  createRecipe: (recipe: RecipeInput) => 
-    apiClient<Recipe>('/recipes/create', {
-      method: 'POST',
+  createRecipe: (recipe: RecipeInput) =>
+    apiClient<Recipe>("/recipes/create", {
+      method: "POST",
+      body: JSON.stringify(recipe),
+    }),
+
+  updateRecipe: (id: string, recipe: RecipeInput) =>
+    apiClient<Recipe>(`/recipes/${id}`, {
+      method: "PUT",
       body: JSON.stringify(recipe),
     }),
 };

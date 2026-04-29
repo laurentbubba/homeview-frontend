@@ -8,22 +8,30 @@ import { use, useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import ContentPage from '../../_components/Common/ContentPage';
 import { useTranslations } from 'next-intl';
+import RecipeFormModal from '../../_components/recipes/RecipeFormModal';
 
 export default function RecipeDetails() {
     const t = useTranslations();
     const [errors, setErrors] = useState<string[]>([]);
     const [status, setStatus] = useState<string>('');
     const [recipeTitle, setRecipeTitle] = useState<string>('');    
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
     const params = useParams<{ id: string }>()
     const id = params.id;
 
     const fetcher = (id: string) => RecipeService.getRecipeById(id);
 
-    const { data: recipe, error, isLoading } = useSWR(
+    const { data: recipe, error, isLoading, mutate: mutateRecipe } = useSWR(
         id ? `recipe-${id}` : null, 
         () => fetcher(id)
     );
+
+    // Close edit modal and refresh data
+    const handleEditModalClose = () => {
+        setIsEditModalOpen(false);
+        mutateRecipe(); // Refresh recipe data after edit
+    };
 
     let content = null;
 
@@ -84,7 +92,26 @@ export default function RecipeDetails() {
 
     return (
         <ContentPage title={(recipe && recipe.name) || 'Recipe Details'}>
+            {/* Edit Button */}
+            {recipe && (
+                <div className="mb-4">
+                    <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150"
+                    >
+                        Edit Recipe
+                    </button>
+                </div>
+            )}
             {content}
+            
+            {/* Edit Modal */}
+            {isEditModalOpen && recipe && (
+                <RecipeFormModal
+                    onClose={handleEditModalClose}
+                    recipeId={String(recipe.id)}
+                />
+            )}
         </ContentPage>
     );
 }

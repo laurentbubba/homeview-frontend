@@ -1,6 +1,6 @@
 import RecipeService from '@/services/RecipeService';
-import { IngredientInput, RecipeInput, RecipeStepInput } from '@/types/Types';
-import React, { useState } from 'react';
+import { IngredientInput, Recipe, RecipeInput, RecipeStepInput } from '@/types/Types';
+import React, { useEffect, useState } from 'react';
 import { mutate } from 'swr';
 import ModalBase from '../Common/Modal/ModalBase';
 import FormButtons from '../Common/Modal/FormButtons';
@@ -10,10 +10,14 @@ import { getErrorMessage } from '@/lib/functions';
 interface RecipeFormModalProps {
     onClose: () => void;
     previouslySelectedRecipeType?: string;
+    recipe?: Recipe | null; // For edit mode
+    recipeId?: string; // For edit mode - the ID to update
 }
 
 // You will pass the close function from the parent
-function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormModalProps) {
+function RecipeFormModal({ onClose, previouslySelectedRecipeType, recipe, recipeId }: RecipeFormModalProps) {
+    const isEdit = !!recipe || !!recipeId;
+    
     const [name, setName] = useState<string | null>(null);
     const [typeString, setTypeString] = useState<string>(
         previouslySelectedRecipeType === 'ALL' ? '' : (previouslySelectedRecipeType || '')
@@ -30,19 +34,74 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
     ]);
     const [expandedStepIndex, setExpandedStepIndex] = useState<number>(0);
 
+    // Populate form when in edit mode
+    useEffect(() => {
+        if (recipe) {
+            setName(recipe.name);
+            setTypeString(recipe.type?.name || '');
+            setCookingDescription(recipe.cookingDescription);
+            setSteps(recipe.steps.map(step => ({
+                order: step.order,
+                title: step.title,
+                description: step.description,
+                time: step.time,
+                ingredients: step.ingredients.map(ing => ({
+                    name: ing.name,
+                    quantity: ing.quantity,
+                    unit: ing.unit
+                }))
+            })));
+            setExpandedStepIndex(0);
+        } else if (recipeId) {
+            // Fetch recipe by ID if only recipeId is provided
+            RecipeService.getRecipeById(recipeId).then((fetchedRecipe) => {
+                setName(fetchedRecipe.name);
+                setTypeString(fetchedRecipe.type?.name || '');
+                setCookingDescription(fetchedRecipe.cookingDescription);
+                setSteps(fetchedRecipe.steps.map(step => ({
+                    order: step.order,
+                    title: step.title,
+                    description: step.description,
+                    time: step.time,
+                    ingredients: step.ingredients.map(ing => ({
+                        name: ing.name,
+                        quantity: ing.quantity,
+                        unit: ing.unit
+                    }))
+                })));
+                setExpandedStepIndex(0);
+            }).catch((err) => {
+                setErrors((errors) => [...errors, getErrorMessage(err)]);
+            });
+        }
+    }, [recipe, recipeId]);
+
     const { data: typesData,isLoading: typesIsLoading, error: typesError } = useRecipeTypes();
 
     // Step management functions
-    const addStep = () => {
+    const addStep = (insertAfterIndex?: number) => {
         const newStep: RecipeStepInput = {
-            order: steps.length + 1,
+            order: (insertAfterIndex !== undefined ? insertAfterIndex + 1 : steps.length) + 1,
             title: '',
             description: '',
             time: 0,
             ingredients: []
         };
-        setSteps([...steps, newStep]);
-        setExpandedStepIndex(steps.length);
+        
+        let newSteps: RecipeStepInput[];
+        if (insertAfterIndex !== undefined) {
+            // Insert after the specified index
+            const before = steps.slice(0, insertAfterIndex + 1);
+            const after = steps.slice(insertAfterIndex + 1).map(s => ({ ...s, order: s.order + 1 }));
+            newSteps = [...before, newStep, ...after];
+        } else {
+            newSteps = [...steps, newStep];
+        }
+        
+        // Reorder all steps
+        newSteps = newSteps.map((step, i) => ({ ...step, order: i + 1 }));
+        setSteps(newSteps);
+        setExpandedStepIndex(insertAfterIndex !== undefined ? insertAfterIndex + 1 : newSteps.length - 1);
     };
 
     const removeStep = (stepIndex: number) => {
@@ -56,6 +115,24 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
                 setExpandedStepIndex(Math.max(0, newSteps.length - 1));
             }
         }
+    };
+
+    const moveStep = (stepIndex: number, direction: 'up' | 'down') => {
+        if (direction === 'up' && stepIndex === 0) return;
+        if (direction === 'down' && stepIndex === steps.length - 1) return;
+
+        const newSteps = [...steps];
+        const swapIndex = direction === 'up' ? stepIndex - 1 : stepIndex + 1;
+        
+        // Swap the steps
+        [newSteps[stepIndex], newSteps[swapIndex]] = [newSteps[swapIndex], newSteps[stepIndex]];
+        
+        // Update order numbers
+        newSteps.forEach((step, i) => {
+            step.order = i + 1;
+        });
+        
+        setSteps(newSteps);
     };
 
     const handleStepChange = (stepIndex: number, field: keyof RecipeStepInput, value: string | number) => {
@@ -119,7 +196,7 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
         return result;
     };
 
-    const handleClickCreateRecipe = async (event: { preventDefault: () => void }) => {
+    const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         setStatus('');
 
@@ -135,22 +212,35 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
         };
 
         try {
-            const responseJson = await RecipeService.createRecipe(recipe);
-
-            setStatus('Recipe created successfully.');
-            mutate(['recipesByType', typeString]);
+            if (isEdit && recipeId) {
+                await RecipeService.updateRecipe(recipeId, recipe);
+                setStatus('Recipe updated successfully.');
+                mutate(`recipe-${recipeId}`);
+                mutate(['recipesByType', typeString]);
+            } else {
+                await RecipeService.createRecipe(recipe);
+                setStatus('Recipe created successfully.');
+                mutate(['recipesByType', typeString]);
+            }
         } catch (error: unknown) {
             setErrors((errors) => [...errors, getErrorMessage(error)]);
         }
     };
 
     return (
-        <ModalBase onClose={onClose} title="Create New Recipe">
-            <form onSubmit={handleClickCreateRecipe}>
+        <ModalBase onClose={onClose} title={isEdit ? 'Edit Recipe' : 'Create New Recipe'}>
+            <form onSubmit={handleSubmit}>
                 {/* Recipe Basic Info */}
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Name</label>
-                    <input onChange={(e) => setName(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" type="text" placeholder="Recipe Name" />
+                    <input 
+                        value={name || ''} 
+                        onChange={(e) => setName(e.target.value)} 
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        id="name" 
+                        type="text" 
+                        placeholder="Recipe Name" 
+                    />
                 </div>
 
                 <div className="mb-4">
@@ -178,7 +268,13 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cookingDescription">Recipe Description</label>
-                    <textarea onChange={(e) => setCookingDescription(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" id="description" placeholder="Cooking Description"></textarea>
+                    <textarea 
+                        value={cookingDescription || ''} 
+                        onChange={(e) => setCookingDescription(e.target.value)} 
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        id="description" 
+                        placeholder="Cooking Description"
+                    />
                 </div>
 
                 {/* Steps Section */}
@@ -202,7 +298,29 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
                                             <p className="text-xs text-gray-600">{step.ingredients.length} ingredient(s) • {step.time} min</p>
                                         </div>
                                     </div>
-                                    <span className="text-lg">{expandedStepIndex === stepIndex ? '▼' : '▶'}</span>
+                                    <div className="flex items-center gap-2">
+                                        {/* Move Up Button */}
+                                        <button
+                                            type="button"
+                                            onClick={(e) => { e.stopPropagation(); moveStep(stepIndex, 'up'); }}
+                                            disabled={stepIndex === 0}
+                                            className={`p-1 rounded transition ${stepIndex === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-200'}`}
+                                            title="Move Up"
+                                        >
+                                            ↑
+                                        </button>
+                                        {/* Move Down Button */}
+                                        <button
+                                            type="button"
+                                            onClick={(e) => { e.stopPropagation(); moveStep(stepIndex, 'down'); }}
+                                            disabled={stepIndex === steps.length - 1}
+                                            className={`p-1 rounded transition ${stepIndex === steps.length - 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-200'}`}
+                                            title="Move Down"
+                                        >
+                                            ↓
+                                        </button>
+                                        <span className="text-lg text-blue-500 font-bold border border-blue-300 rounded px-1.5 py-0.5">{expandedStepIndex === stepIndex ? '−' : '+'}</span>
+                                    </div>
                                 </div>
 
                                 {/* Step Details */}
@@ -302,11 +420,19 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
                                             <button
                                                 type="button"
                                                 onClick={() => removeStep(stepIndex)}
-                                                className="text-xs bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded focus:outline-none transition duration-200"
+                                                className="text-xs bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded focus:outline-none transition duration-200 mr-2"
                                             >
                                                 Remove Step
                                             </button>
                                         )}
+                                        {/* Add Step In Between Button */}
+                                        <button
+                                            type="button"
+                                            onClick={() => addStep(stepIndex)}
+                                            className="text-xs bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none transition duration-200"
+                                        >
+                                            + Add Step After
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -316,7 +442,7 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
                     {/* Add Step Button */}
                     <button
                         type="button"
-                        onClick={addStep}
+                        onClick={() => addStep()}
                         className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none transition duration-200"
                     >
                         + Add Step
@@ -338,7 +464,7 @@ function RecipeFormModal({ onClose, previouslySelectedRecipeType }: RecipeFormMo
                     </div>
                 )}
                 
-                <FormButtons onClose={onClose} submitText='Add Recipe'/>
+                <FormButtons onClose={onClose} submitText={isEdit ? 'Save Changes' : 'Add Recipe'}/>
             </form>
         </ModalBase>
     );
